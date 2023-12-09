@@ -1,21 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"database/sql"
 
-	"github.com/rafaelcamelo31/go-fc-learn/internal/order/entity"
+	"github.com/rafaelcamelo31/go-fc-learn/internal/order/infra/database"
+	"github.com/rafaelcamelo31/go-fc-learn/internal/order/usecase"
 )
 
 func main() {
-	order, err := entity.NewOrder("123", 10, 2)
+	db, err := sql.Open("mysql", "root:root@tcp(mysql:3306)/orders")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	repository := database.NewOrderRepository(db)
+	uc := usecase.NewCalculateFinalPriceUseCase(repository)
+
+	input := usecase.OrderInputDTO{
+		ID:    "123",
+		Price: 100,
+		Tax:   10,
+	}
+
+	output, err := uc.Execute(input)
 	if err != nil {
 		panic(err)
 	}
 
-	err = order.CalculateFinalPrice()
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("The final price is:", order.FinalPrice)
+	println(output)
 }
