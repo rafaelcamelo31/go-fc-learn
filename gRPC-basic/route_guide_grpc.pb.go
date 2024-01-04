@@ -25,7 +25,7 @@ type RouteGuideClient interface {
 	GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error)
 	ListFeatures(ctx context.Context, in *Rectangle, opts ...grpc.CallOption) (RouteGuide_ListFeaturesClient, error)
 	RecordRoute(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RecordRouteClient, error)
-	RputeChat(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RputeChatClient, error)
+	RouteChat(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RouteChatClient, error)
 }
 
 type routeGuideClient struct {
@@ -88,7 +88,7 @@ func (c *routeGuideClient) RecordRoute(ctx context.Context, opts ...grpc.CallOpt
 
 type RouteGuide_RecordRouteClient interface {
 	Send(*Point) error
-	Recv() (*RouteSummary, error)
+	CloseAndRecv() (*RouteSummary, error)
 	grpc.ClientStream
 }
 
@@ -100,7 +100,10 @@ func (x *routeGuideRecordRouteClient) Send(m *Point) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *routeGuideRecordRouteClient) Recv() (*RouteSummary, error) {
+func (x *routeGuideRecordRouteClient) CloseAndRecv() (*RouteSummary, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
 	m := new(RouteSummary)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -108,30 +111,30 @@ func (x *routeGuideRecordRouteClient) Recv() (*RouteSummary, error) {
 	return m, nil
 }
 
-func (c *routeGuideClient) RputeChat(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RputeChatClient, error) {
-	stream, err := c.cc.NewStream(ctx, &RouteGuide_ServiceDesc.Streams[2], "/routeguide.RouteGuide/RputeChat", opts...)
+func (c *routeGuideClient) RouteChat(ctx context.Context, opts ...grpc.CallOption) (RouteGuide_RouteChatClient, error) {
+	stream, err := c.cc.NewStream(ctx, &RouteGuide_ServiceDesc.Streams[2], "/routeguide.RouteGuide/RouteChat", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &routeGuideRputeChatClient{stream}
+	x := &routeGuideRouteChatClient{stream}
 	return x, nil
 }
 
-type RouteGuide_RputeChatClient interface {
+type RouteGuide_RouteChatClient interface {
 	Send(*RouteNote) error
 	Recv() (*RouteNote, error)
 	grpc.ClientStream
 }
 
-type routeGuideRputeChatClient struct {
+type routeGuideRouteChatClient struct {
 	grpc.ClientStream
 }
 
-func (x *routeGuideRputeChatClient) Send(m *RouteNote) error {
+func (x *routeGuideRouteChatClient) Send(m *RouteNote) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *routeGuideRputeChatClient) Recv() (*RouteNote, error) {
+func (x *routeGuideRouteChatClient) Recv() (*RouteNote, error) {
 	m := new(RouteNote)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -146,7 +149,7 @@ type RouteGuideServer interface {
 	GetFeature(context.Context, *Point) (*Feature, error)
 	ListFeatures(*Rectangle, RouteGuide_ListFeaturesServer) error
 	RecordRoute(RouteGuide_RecordRouteServer) error
-	RputeChat(RouteGuide_RputeChatServer) error
+	RouteChat(RouteGuide_RouteChatServer) error
 	mustEmbedUnimplementedRouteGuideServer()
 }
 
@@ -163,8 +166,8 @@ func (UnimplementedRouteGuideServer) ListFeatures(*Rectangle, RouteGuide_ListFea
 func (UnimplementedRouteGuideServer) RecordRoute(RouteGuide_RecordRouteServer) error {
 	return status.Errorf(codes.Unimplemented, "method RecordRoute not implemented")
 }
-func (UnimplementedRouteGuideServer) RputeChat(RouteGuide_RputeChatServer) error {
-	return status.Errorf(codes.Unimplemented, "method RputeChat not implemented")
+func (UnimplementedRouteGuideServer) RouteChat(RouteGuide_RouteChatServer) error {
+	return status.Errorf(codes.Unimplemented, "method RouteChat not implemented")
 }
 func (UnimplementedRouteGuideServer) mustEmbedUnimplementedRouteGuideServer() {}
 
@@ -223,7 +226,7 @@ func _RouteGuide_RecordRoute_Handler(srv interface{}, stream grpc.ServerStream) 
 }
 
 type RouteGuide_RecordRouteServer interface {
-	Send(*RouteSummary) error
+	SendAndClose(*RouteSummary) error
 	Recv() (*Point, error)
 	grpc.ServerStream
 }
@@ -232,7 +235,7 @@ type routeGuideRecordRouteServer struct {
 	grpc.ServerStream
 }
 
-func (x *routeGuideRecordRouteServer) Send(m *RouteSummary) error {
+func (x *routeGuideRecordRouteServer) SendAndClose(m *RouteSummary) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -244,25 +247,25 @@ func (x *routeGuideRecordRouteServer) Recv() (*Point, error) {
 	return m, nil
 }
 
-func _RouteGuide_RputeChat_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(RouteGuideServer).RputeChat(&routeGuideRputeChatServer{stream})
+func _RouteGuide_RouteChat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(RouteGuideServer).RouteChat(&routeGuideRouteChatServer{stream})
 }
 
-type RouteGuide_RputeChatServer interface {
+type RouteGuide_RouteChatServer interface {
 	Send(*RouteNote) error
 	Recv() (*RouteNote, error)
 	grpc.ServerStream
 }
 
-type routeGuideRputeChatServer struct {
+type routeGuideRouteChatServer struct {
 	grpc.ServerStream
 }
 
-func (x *routeGuideRputeChatServer) Send(m *RouteNote) error {
+func (x *routeGuideRouteChatServer) Send(m *RouteNote) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *routeGuideRputeChatServer) Recv() (*RouteNote, error) {
+func (x *routeGuideRouteChatServer) Recv() (*RouteNote, error) {
 	m := new(RouteNote)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -291,12 +294,11 @@ var RouteGuide_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "RecordRoute",
 			Handler:       _RouteGuide_RecordRoute_Handler,
-			ServerStreams: true,
 			ClientStreams: true,
 		},
 		{
-			StreamName:    "RputeChat",
-			Handler:       _RouteGuide_RputeChat_Handler,
+			StreamName:    "RouteChat",
+			Handler:       _RouteGuide_RouteChat_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

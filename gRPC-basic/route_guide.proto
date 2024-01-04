@@ -9,9 +9,9 @@ service  RouteGuide {
     
     rpc ListFeatures(Rectangle) returns (stream Feature) {}
 
-    rpc RecordRoute(stream Point) returns (stream RouteSummary) {}
+    rpc RecordRoute(stream Point) returns (RouteSummary) {}
 
-    rpc RputeChat(stream RouteNote) returns (stream RouteNote) {}
+    rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
 }
 
 message Point {
