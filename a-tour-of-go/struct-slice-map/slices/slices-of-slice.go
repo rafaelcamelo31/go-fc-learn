@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func main() {
+func SliceOfSlice() {
 	// Create a tic-tac-toe board.
 	board := [][]string{
 		{"_", "_", "_"},

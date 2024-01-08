@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main() {
+func SliceLenCap() {
 	s := []int{2, 3, 5, 7, 11, 13}
 	printSlice("default", s)
 

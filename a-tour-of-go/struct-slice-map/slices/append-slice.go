@@ -2,23 +2,23 @@ package main
 
 import "fmt"
 
-func main() {
+func AppendSlice() {
 	var s []int
-	printSlice(s)
+	printSlice1(s)
 
 	// append works on nill slices.
 	s = append(s, 0)
-	printSlice(s)
+	printSlice1(s)
 
 	// The slice grows as needed.
 	s = append(s, 1)
-	printSlice(s)
+	printSlice1(s)
 
 	// We can add more than one element at a time.
 	s = append(s, 2, 3, 4)
-	printSlice(s)
+	printSlice1(s)
 }
 
-func printSlice(s []int) {
+func printSlice1(s []int) {
 	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 }

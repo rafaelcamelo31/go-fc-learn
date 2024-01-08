@@ -1,3 +1,5 @@
 go 1.21.5
 
 use ./gRPC-basic
+
+use ./a-tour-of-go/struct-slice-map
