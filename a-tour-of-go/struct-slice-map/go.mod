@@ -1,4 +1,4 @@
-module github.com/rafaelcamelo31/struct-slice-map
+module go-fc-learn/a-tour-of-go/struct-slice-map/exercises
 
 go 1.21.5
 

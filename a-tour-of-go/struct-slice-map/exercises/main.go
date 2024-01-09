@@ -11,4 +11,7 @@ func main() {
 
 	// Ex: Map
 	wc.Test(WordCount)
+
+	// Ex: Fibonacci
+	Fibonacci()
 }
