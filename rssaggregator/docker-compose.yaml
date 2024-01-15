@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+ 
+  db:
+    image: postgres:15-alpine
+    restart: always
+    container_name: rssagg_db
+    tty: true
+    ports:
+      - ${PG_PORT}:${PG_PORT}
+    environment:
+      POSTGRES_USER: rafael
+      POSTGRES_PASSWORD: pgpassword
+    volumes:
+        - pgdata:/var/lib/postgresql/data
+ 
+volumes:
+  pgdata:
+ 
