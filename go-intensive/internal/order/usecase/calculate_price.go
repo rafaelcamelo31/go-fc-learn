@@ -1,6 +1,8 @@
 package usecase
 
-import "github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/entity"
+import (
+	"github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/entity"
+)
 
 type OrderInputDTO struct {
 	ID    string
@@ -23,10 +25,7 @@ func NewCalculateFinalPriceUseCase(orderRepository entity.OrderRepositoryInterfa
 	return &CalculateFinalPriceUseCase{OrderRepository: orderRepository}
 }
 func (c *CalculateFinalPriceUseCase) Execute(input OrderInputDTO) (*OrderOutputDTO, error) {
-	var order *entity.Order
-	var err error
-
-	entity.NewOrder(input.ID, input.Price, input.Tax)
+	order, err := entity.NewOrder(input.ID, input.Price, input.Tax)
 	if err != nil {
 		return nil, err
 	}
