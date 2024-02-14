@@ -7,3 +7,5 @@ use ./a-tour-of-go/struct-slice-map
 use ./rest-api-gin
 
 use ./rssaggregator
+
+use ./generics/digital-ocean
