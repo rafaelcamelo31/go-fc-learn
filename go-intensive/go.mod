@@ -1,4 +1,4 @@
-module github.com/rafaelcamelo31/go-fc-learn
+module github.com/rafaelcamelo31/go-fc-learn/go-intensive
 
 go 1.21.5
 

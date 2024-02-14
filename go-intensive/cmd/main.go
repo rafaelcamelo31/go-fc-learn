@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 
-	"github.com/rafaelcamelo31/go-fc-learn/internal/order/infra/database"
-	"github.com/rafaelcamelo31/go-fc-learn/internal/order/usecase"
+	"github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/infra/database"
+	"github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/usecase"
 )
 
 func main() {

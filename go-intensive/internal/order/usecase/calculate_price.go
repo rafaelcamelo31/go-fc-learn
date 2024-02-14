@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/rafaelcamelo31/go-fc-learn/internal/order/entity"
+import "github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/entity"
 
 type OrderInputDTO struct {
 	ID    string

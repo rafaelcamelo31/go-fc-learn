@@ -3,7 +3,7 @@ package entity_test
 import (
 	"testing"
 
-	"github.com/rafaelcamelo31/go-fc-learn/internal/order/entity"
+	"github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/entity"
 	"github.com/stretchr/testify/assert"
 )
 

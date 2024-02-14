@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/rafaelcamelo31/go-fc-learn/internal/order/entity"
+	"github.com/rafaelcamelo31/go-fc-learn/go-intensive/internal/order/entity"
 )
 
 type OrderRepository struct {

@@ -9,3 +9,5 @@ use ./rest-api-gin
 use ./rssaggregator
 
 use ./generics/digital-ocean
+
+use ./go-intensive
